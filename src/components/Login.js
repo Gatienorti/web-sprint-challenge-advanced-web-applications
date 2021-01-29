@@ -1,22 +1,66 @@
 import React, { useEffect } from "react";
-import axios from "axios";
+import {axiosWithAuth} from '../utils/axiosWithAuth'
 
-const Login = () => {
-  // make a post request to retrieve a token from the api
-  // when you have handled the token, navigate to the BubblePage route
+class Login extends React.Component {
 
-  return (
-    <>
-      <h1>
-        Welcome to the Bubble App!
-        <p>Build a login page here</p>
-      </h1>
-    </>
-  );
-};
+  state = {
+      credentials: {
+          username: '',
+          password: ''
+      }
+  };
 
-export default Login;
+  handleChange = e => {
+      this.setState({
+          credentials: {
+              ...this.state.credentials,
+              [e.target.name]: e.target.value
+          }
+      });
+  };
 
+  login = e => {
+      e.preventDefault();
+
+      axiosWithAuth()
+          .post('/login', this.state.credentials)
+          .then(res => {
+              console.log(res)
+              localStorage.setItem('token', res.data.payload);
+              this.props.history.push('/bubbles')
+          })
+          .catch(err => {
+              console.log({err})
+          })
+  }
+
+  render() {
+      return (
+          <>
+              <form className='login' onSubmit={this.login}>
+                  <input
+                      type="text"
+                      name="username"
+                      value={this.state.credentials.username}
+                      onChange={this.handleChange}
+                  />
+                  <input
+                      type="password"
+                      name="password"
+                      value={this.state.credentials.password}
+                      onChange={this.handleChange}
+                  />
+                  <button>Log in</button>
+              </form>
+          </>
+      )
+
+
+  }
+
+}
+
+export default Login; 
 //Task List:
 //1. Build a form containing a username and password field.
 //2. Add whatever state nessiary for form functioning.
