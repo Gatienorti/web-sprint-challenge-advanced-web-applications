@@ -19,7 +19,18 @@ body,
     height: 100%;
   }
 }
-
+.login{
+  width:15vw;
+  margin:auto;
+}
+.login input{
+  width:9vw;
+  margin: 1vh auto;
+}
+.login button{
+  width: 9vw;
+  margin:1vh auto;
+}
 .spacer {
   height: 100%;
 }
